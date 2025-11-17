@@ -1,0 +1,97 @@
+<div class="p-6 flex justify-center">
+  <div class="w-full max-w-4xl">
+
+    <div class="d-flex align-items-center gap-3 py-5 ps-0 pe-0 w-75 mx-auto">
+
+      <div class="flex-grow-1">
+        <input class="form-control w-50" placeholder="Search" [(ngModel)]="inputNamePart" (input)="filterByNamePart()" />
+      </div>
+
+      <span class="fw-medium">Filter by:</span>
+
+      <div class="d-flex align-items-center gap-2">
+        <select id="brandSelect" [(ngModel)]="selectedBrand" class="form-select" (change)="filterByBrand()">
+          <option value="" selected hidden>Brand</option>
+          @for (b of brands; track b) {
+          <option [value]="b">{{ b }}</option>
+          }
+        </select>
+        <button class="btn btn-danger" (click)="clearBrandFilter()">X</button>
+      </div>
+
+      <div class="d-flex align-items-center gap-2">
+        <select id="categorySelect" [(ngModel)]="selectedCategory" class="form-select" (change)="filterByCategory()">
+          <option value="" selected hidden>Category</option>
+          @for (c of categories; track c) {
+          <option [value]="c">{{ c }}</option>
+          }
+        </select>
+        <button class="btn btn-danger" (click)="clearCategoryFilter()">X</button>
+      </div>
+
+    </div>
+    @if (loading) {
+    <div class="text-center text-gray-500">Loading...</div>
+    } @else if (error) {
+    <div class="text-center text-red-600">{{ error }}</div>
+    } @else if (products.length === 0) {
+    <div class="text-center text-gray-600">No products found.</div>
+    } @else {
+    <table class="border-collapse border border-gray-300 rounded-xl shadow-sm mx-auto w-75">
+      <thead>
+        <tr class="bg-gray-100 text-left">
+          <th class="border p-2">ID</th>
+          <th class="border p-2">Name</th>
+          <th class="border p-2">Brand</th>
+          <th class="border p-2">Price</th>
+          <th class="border p-2">Category</th>
+          <th class="border p-2">Description</th>
+          <th class="border p-2">Images</th>
+        </tr>
+      </thead>
+      <tbody class="text-white">
+        @for (p of products; track p.id) {
+        <tr class="hover:bg-gray-50">
+          <td class="border p-2">{{ p.id }}</td>
+          <td class="border p-2 font-medium">{{ p.name }}</td>
+          <td class="border p-2">{{ p.brand }}</td>
+          <td class="border p-2">{{ p.price | currency }}</td>
+          <td class="border p-2">{{ p.category.name }}</td>
+          <td class="border p-2">{{ p.description }}</td>
+          <td class="border p-2">
+            @if (p.images.length) {
+            <div class="flex gap-2">
+              @for (img of p.images; track img.id) {
+              <img [src]="img.name" [alt]="img.dwnUrl || p.name" class="w-12 h-12 object-cover rounded" />
+              }
+            </div>
+            } @else {
+            <span class="text-gray-400">No images</span>
+            }
+          </td>
+          @if (userService.actualUser() !== null) {
+          <td class="border p-2">
+            <div class="flex items-center gap-2">
+              <input type="number" value=1 min="1" [max]="p.inventory" class="qinput text-center" #qtyInput />
+
+            </div>
+          </td>
+          <td class="border p-2">
+            <div class="flex items-center gap-2">
+              <button class="btn btn-success" (click)="addToCart(p.id, qtyInput.value)">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                  fill="#e3e3e3">
+                  <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z" />
+                </svg>
+              </button>
+            </div>
+          </td>
+          }
+        </tr>
+        }
+      </tbody>
+    </table>
+    }
+
+  </div>
+</div>

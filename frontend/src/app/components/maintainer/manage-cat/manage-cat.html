@@ -1,0 +1,30 @@
+<div class="d-flex justify-content-center mt-5"> 
+  @if (maintainerService.getMode() == op.ADD) {
+    <form class="w-40" novalidate style="width: 40%;" #categoryFrom="ngForm" (ngSubmit)="onAdd(categoryFrom)">
+      <div class="mb-3">
+        <label for="name" class="form-label">Category name</label>
+        <input type="text" class="form-control" id="name" name="name" [(ngModel)]="catName" #catNameValid="ngModel"
+          required />
+        <div class="invalid-feedback" [class.d-block]="(submitted && catNameValid.invalid)">
+          Please enter the category name.
+        </div>
+      </div>
+      <button class="btn btn-success w-30" type="submit">Add</button>
+    </form>
+  }@else if (maintainerService.getMode() == op.REMOVE) {
+    <form class="w-40" novalidate style="width: 40%;" #categoryFrom="ngForm" (ngSubmit)="onRemove(categoryFrom)">
+      <div class="mb-3">
+        <label for="catId" class="form-label">Category id</label>
+        <div class="invalid-feedback d-block fw-bold pb-2">
+          If you remove a category that a product belongs to, it will also be deleted.
+        </div>
+        <input type="number" class="form-control" min="0" id="catId" name="catId" [(ngModel)]="catId" #catIdValid="ngModel"
+          required />
+        <div class="invalid-feedback" [class.d-block]="(submitted && catIdValid.invalid)">
+          Please enter the category id.
+        </div>
+      </div>
+      <button class="btn btn-danger w-30" type="submit">Remove</button>
+    </form>
+  }
+</div>

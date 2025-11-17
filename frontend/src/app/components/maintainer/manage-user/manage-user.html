@@ -1,0 +1,91 @@
+<div class="d-flex justify-content-center mt-5">
+  @if (maintainerService.getMode() == op.LIST) {
+  <table class="border-collapse border border-gray-300 rounded-xl shadow-sm mx-auto w-75">
+    <thead>
+      <tr class="bg-gray-100 text-left">
+        <th class="border p-2">ID</th>
+        <th class="border p-2">First Name</th>
+        <th class="border p-2">Last Name</th>
+        <th class="border p-2">Email</th>
+        <th class="border p-2">Orders</th>
+        <th class="border p-2">Cart</th>
+      </tr>
+    </thead>
+    <tbody class="text-white">
+      @for (u of users; track u.id) {
+      <tr class="hover:bg-gray-50">
+        <td class="border p-2">{{ u.id }}</td>
+        <td class="border p-2 font-medium">{{ u.firstName }}</td>
+        <td class="border p-2">{{ u.lastName }}</td>
+        <td class="border p-2">{{ u.email}}</td>
+        <td class="border p-2">
+          @for (o of u.orders; track $index) {
+          <p>
+            <span class="pe-3">{{o.id}}</span>
+          </p>
+          }
+        </td>
+        <td class="border p-2">
+          <p>{{u.cart.id}}</p>
+          <p>{{u.cart.totalAmount}}€</p>
+        </td>
+        <td class="border p-2">
+          <p>
+            <span class="pe-3">ID</span>
+            <span class="pe-3">Quantity</span>
+            <span class="pe-3">Unit Price</span>
+            <span class="pe-3">Product Name</span>
+          </p>
+          @for (i of u.cart.cartItems; track $index) {
+          <p>
+            <span class="pe-3">{{i.id}}</span>
+            <span class="pe-3">{{i.quantity}}</span>
+            <span class="pe-3">{{i.unitPrice}}€</span>
+            <span class="pe-3">{{i.product.name}}</span>
+          </p>
+          }
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
+  }@else if (maintainerService.getMode() == op.REMOVE) {
+  <form class="w-40" novalidate style="width: 40%;" #userForm="ngForm" (ngSubmit)="onRemove(userForm)">
+    <div class="mb-3">
+      <label for="userId" class="form-label">User id</label>
+      <div class="invalid-feedback d-block fw-bold pb-2">
+        If you delete a user, everything that belongs to it is deleted as well.
+      </div>
+      <input type="number" class="form-control" min="0" id="userId" name="userId" [(ngModel)]="userId"
+        #userIdValid="ngModel" required />
+      <div class="invalid-feedback" [class.d-block]="(submitted && userIdValid.invalid)">
+        Please enter the user id.
+      </div>
+    </div>
+    <button class="btn btn-danger w-30" type="submit">Delete</button>
+  </form>
+  }@else if (maintainerService.getMode() == op.UPDATE) {
+  <form class="w-40" novalidate style="width: 40%;" #userForm="ngForm" (ngSubmit)="onUpdate(userForm)">
+    <div class="mb-3">
+      <label for="userId" class="form-label">User id</label>
+      <input type="number" class="form-control" min="0" id="userId" name="userId" [(ngModel)]="userId"
+        #userIdValid="ngModel" required />
+      <div class="invalid-feedback" [class.d-block]="(submitted && userIdValid.invalid)">
+        Please enter the user id.
+      </div>
+      </div>
+      <div class="mb-3">
+        <select id="role" name="role" [(ngModel)]="selectedRole" #roleName="ngModel" class="form-select" required>
+          <option value="" disabled hidden selected>Role</option>
+          <option value="admin">admin</option>
+          <option value="user">user</option>
+        </select>
+      </div>
+      <div class="invalid-feedback" [class.d-block]="(submitted && roleName.invalid)">
+        Please select a role.
+      </div>
+    
+    <button class="btn btn-success w-30" type="submit">Change</button>
+  </form>
+  }
+</div>

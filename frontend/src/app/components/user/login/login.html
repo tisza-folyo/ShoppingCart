@@ -1,0 +1,44 @@
+<div class="d-flex justify-content-center mt-5">
+  <form class="w-40" novalidate style="width: 40%;" #userForm="ngForm" (ngSubmit)="onLogin(userForm)" [hidden]="(success)">
+
+    <div class="mb-3">
+      <label for="inputEmail" class="form-label">Email</label>
+      <input
+        type="email"
+        class="form-control"
+        id="inputEmail"
+        name="email"
+        placeholder="name@example.com"
+        required
+        email
+        [(ngModel)]="email"
+        #emailModel="ngModel"
+      />
+      <div class="invalid-feedback" [class.d-block]="(emailModel.invalid && check)">
+        <span [hidden]="!emailModel.errors?.['required']">Please enter your email.</span>
+        <span [hidden]="!emailModel.errors?.['email']">Please enter a valid email address.</span>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="inputPassword" class="form-label">Password</label>
+      <input
+        type="password"
+        class="form-control"
+        id="inputPassword"
+        name="password"
+        placeholder="Enter your password"
+        required
+        [(ngModel)]="password"
+        #passwordModel="ngModel"
+      />
+      <div class="invalid-feedback" [class.d-block]="(passwordModel.invalid && check)">
+        <span [hidden]="!passwordModel.errors?.['required']">Please enter a password.</span>
+      </div>
+    </div>
+
+    <button class="btn btn-primary w-30" type="submit">Login</button>
+  </form>
+</div>
+
+

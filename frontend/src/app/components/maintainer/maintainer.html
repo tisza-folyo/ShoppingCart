@@ -1,0 +1,26 @@
+<div class="text-center pt-3 d-flex justify-content-center align-items-start gap-3">
+    <div class="text-center pt-3 d-flex flex-column justify-content-center gap-3">
+        <h2>Product</h2>
+        <button class="btn btn-success px-4 py-2" (click)="manage(op.ADD,'/maintain/product')">Add product</button>
+        <button class="btn btn-danger px-4 py-2" (click)="manage(op.REMOVE,'/maintain/product')">Remove product</button>
+    </div>
+    
+    <div class="text-center pt-3 d-flex flex-column justify-content-center gap-3">
+        <h2>Category</h2>
+        <button class="btn btn-success px-4 py-2" (click)="manage(op.ADD,'maintain/category')">Add category</button>
+        <button class="btn btn-danger px-4 py-2" (click)="manage(op.REMOVE,'maintain/category')">Remove category</button>
+    </div>
+    
+    <div class="text-center pt-3 d-flex flex-column justify-content-center gap-3">
+        <h2>Order</h2>
+        <button class="btn btn-primary px-4 py-2" (click)="manage(op.LIST,'maintain/order')">List orders</button>
+        <button class="btn btn-danger px-4 py-2" (click)="manage(op.REMOVE,'maintain/order')">Remove order</button>
+    </div>
+    <div class="text-center pt-3 d-flex flex-column justify-content-center gap-3">
+        <h2>User</h2>
+        <button class="btn btn-primary px-4 py-2" (click)="manage(op.LIST,'maintain/user')">List users</button>
+        <button class="btn btn-danger px-4 py-2" (click)="manage(op.REMOVE,'maintain/user')">Delete user</button>
+        <button class="btn btn-primary px-4 py-2" (click)="manage(op.UPDATE,'maintain/user')">Change user role</button>
+    </div>
+    
+</div>

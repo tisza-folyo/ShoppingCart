@@ -1,0 +1,55 @@
+<div class="d-flex justify-content-center mt-5"> 
+  @if (maintainerService.getMode() == op.LIST) {
+    <table class="border-collapse border border-gray-300 rounded-xl shadow-sm mx-auto w-75">
+      <thead>
+        <tr class="bg-gray-100 text-left">
+          <th class="border p-2">Order ID</th>
+          <th class="border p-2">User ID</th>
+          <th class="border p-2">Date</th>
+          <th class="border p-2">Total</th>
+          <th class="border p-2">Status</th>
+          <th class="border p-2">Items</th>
+        </tr>
+      </thead>
+      <tbody class="text-white">
+        @for (o of orders; track o.id) {
+        <tr class="hover:bg-gray-50">
+          <td class="border p-2">{{ o.id }}</td>
+          <td class="border p-2 font-medium">{{ o.userId }}</td>
+          <td class="border p-2">{{ o.orderDate }}</td>
+          <td class="border p-2">{{ o.totalAmount}}€</td>
+          <td class="border p-2">{{ o.status }}</td>
+          <td class="border p-2">
+            <p>
+              <span class="pe-3">ID</span>
+              <span class="pe-3">Name</span>
+              <span class="pe-3">Quantity</span>
+              <span class="pe-3">Unit Price</span>
+            </p>
+            @for (i of o.items; track $index) {
+              <p>
+                <span class="pe-3">{{i.productId}}</span>
+                <span class="pe-3">{{i.productName}}</span>
+                <span class="pe-3">{{i.quantity}}</span>
+                <span class="pe-3">{{i.price}}€</span>
+              </p>
+            }
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  }@else if (maintainerService.getMode() == op.REMOVE) {
+    <form class="w-40" novalidate style="width: 40%;" #categoryFrom="ngForm" (ngSubmit)="onRemove(categoryFrom)">
+      <div class="mb-3">
+        <label for="ordId" class="form-label">Order id</label>
+        <input type="number" class="form-control" min="0" id="ordId" name="ordId" [(ngModel)]="ordId" #ordIdValid="ngModel"
+          required />
+        <div class="invalid-feedback" [class.d-block]="(submitted && ordIdValid.invalid)">
+          Please enter the order id.
+        </div>
+      </div>
+      <button class="btn btn-danger w-30" type="submit">Remove</button>
+    </form>
+  }
+</div>

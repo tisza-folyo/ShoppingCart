@@ -1,0 +1,78 @@
+<div class="d-flex justify-content-center mt-5">
+  <form class="w-40" novalidate style="width: 40%;" #userForm="ngForm" (ngSubmit)="onSignUp(userForm)"  [hidden]="(submitAttempted && !check)">
+    <div class="mb-3">
+      <label for="firstName" class="form-label">First name</label>
+      <input
+        type="text"
+        class="form-control"
+        id="firstName"
+        name="firstName"
+        placeholder="Enter your first name"
+        required
+        [(ngModel)]="firstName"
+        #firstNameModel="ngModel"
+      />
+      <div class="invalid-feedback" [class.d-block]="(submitAttempted && firstNameModel.invalid && check)">
+        Please enter your first name.
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="lastName" class="form-label">Last name</label>
+      <input
+        type="text"
+        class="form-control"
+        id="lastName"
+        name="lastName"
+        placeholder="Enter your last name"
+        required
+        [(ngModel)]="lastName"
+        #lastNameModel="ngModel"
+      />
+      <div class="invalid-feedback" [class.d-block]="(submitAttempted && lastNameModel.invalid && check)">
+        Please enter your last name.
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="inputEmail" class="form-label">Email</label>
+      <input
+        type="email"
+        class="form-control"
+        id="inputEmail"
+        name="email"
+        placeholder="name@example.com"
+        required
+        email
+        [(ngModel)]="email"
+        #emailModel="ngModel"
+      />
+      <div class="invalid-feedback" [class.d-block]="(submitAttempted && emailModel.invalid && check)">
+        <span [hidden]="!emailModel.errors?.['required']">Please enter your email.</span>
+        <span [hidden]="!emailModel.errors?.['email']">Please enter a valid email address.</span>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="inputPassword" class="form-label">Password</label>
+      <input
+        type="password"
+        class="form-control"
+        id="inputPassword"
+        name="password"
+        placeholder="Enter your password"
+        required
+        minlength="6"
+        [(ngModel)]="password"
+        #passwordModel="ngModel"
+      />
+      <div class="invalid-feedback" [class.d-block]="(submitAttempted && passwordModel.invalid && check)">
+        <span [hidden]="!passwordModel.errors?.['required']">Please enter a password.</span>
+        <span [hidden]="!passwordModel.errors?.['minlength']">Password must be at least 6 characters.</span>
+      </div>
+    </div>
+
+    <button class="btn btn-primary w-30" type="submit">Sign up</button>
+  </form>
+</div>
+
