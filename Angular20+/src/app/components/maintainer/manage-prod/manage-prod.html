@@ -1,53 +1,88 @@
-<div class="d-flex justify-content-center mt-5">
+<div class="d-flex justify-content-center flex-column align-items-center mt-5 p-0">
   @if (maintainerService.getMode() === op.ADD) {
-  <form class="w-40" novalidate style="width: 40%;" #prodcutForm="ngForm" (ngSubmit)="onAdd(prodcutForm)">
-    <div class="mb-3">
-      <label for="name" class="form-label">Product name</label>
-      <input type="text" class="form-control" id="name" name="name" placeholder="Enter product name" [(ngModel)]="name" #prodName="ngModel" required />
-      <div class="invalid-feedback" [class.d-block]="(submitted && prodName.invalid)">
-        Please enter the product name.
-      </div>
-    </div>
-    <div class="mb-3">
-      <label for="brand" class="form-label">Brand name</label>
-      <input type="text" class="form-control" id="brand" name="brand" placeholder="Enter brand name" [(ngModel)]="brand" #brandName="ngModel" required />
-      <div class="invalid-feedback" [class.d-block]="(submitted && brandName.invalid)">
-        Please enter the brand name.
-      </div>
-    </div>
-    <div class="mb-3">
-      <label for="price" class="form-label">Price</label>
-      <input type="number" id="price" name="price" min="0" class="form-control" placeholder="Enter the unit price" [(ngModel)]="price" #priceNum="ngModel" required />
-      <div class="invalid-feedback" [class.d-block]="(submitted && priceNum.invalid)">
-        Please enter the unit price.
-      </div>
-    </div>
-    <div class="mb-3">
-      <label for="inventory" class="form-label">Inventory</label>
-      <input type="number" id="inventory" name="inventory" min="0" class="form-control" placeholder="Enter the number of products in stock" [(ngModel)]="inventory" #stockNum="ngModel" required />
-      <div class="invalid-feedback" [class.d-block]="(submitted && stockNum.invalid)">
-        Please enter the number of products in stock.
-      </div>
-    </div>
-    <div class="mb-3">
-      <label for="description" class="form-label">Description</label>
-      <textarea id="description" name="description" class="form-control" rows="4" placeholder="Enter product description" [(ngModel)]="description" #descriptionName="ngModel" ></textarea>
-    </div>
 
-    <div class="mb-3">
-      <select id="categorySelect" name="category" [(ngModel)]="selectedCategory" #categoryName="ngModel" class="form-select" required>
+  <div class="d-flex justify-content-left w-50">
+    <div class="form-check form-switch mb-4">
+      <input class="form-check-input" type="checkbox" id="mySwitch" [(ngModel)]="isActive" (change)="resetSubmitted()">
+      <label class="form-check-label" for="mySwitch">
+        {{ isActive ? 'Switch back' : 'Switch to JSON' }}
+      </label>
+    </div>
+  </div>
+
+    @if (!this.isActive) {
+
+    <form class="w-50" novalidate #prodcutForm="ngForm" (ngSubmit)="onAdd(prodcutForm)">
+      <div class="mb-3">
+        <label for="name" class="form-label">Product name</label>
+        <input type="text" class="form-control" id="name" name="name" placeholder="Enter product name"
+          [(ngModel)]="name" #prodName="ngModel" required />
+        <div class="invalid-feedback" [class.d-block]="(submitted && prodName.invalid)">
+          Please enter the product name.
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="brand" class="form-label">Brand name</label>
+        <input type="text" class="form-control" id="brand" name="brand" placeholder="Enter brand name"
+          [(ngModel)]="brand" #brandName="ngModel" required />
+        <div class="invalid-feedback" [class.d-block]="(submitted && brandName.invalid)">
+          Please enter the brand name.
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="price" class="form-label">Price</label>
+        <input type="number" id="price" name="price" min="0" class="form-control" placeholder="Enter the unit price"
+          [(ngModel)]="price" #priceNum="ngModel" required />
+        <div class="invalid-feedback" [class.d-block]="(submitted && priceNum.invalid)">
+          Please enter the unit price.
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="inventory" class="form-label">Inventory</label>
+        <input type="number" id="inventory" name="inventory" min="0" class="form-control"
+          placeholder="Enter the number of products in stock" [(ngModel)]="inventory" #stockNum="ngModel" required />
+        <div class="invalid-feedback" [class.d-block]="(submitted && stockNum.invalid)">
+          Please enter the number of products in stock.
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea id="description" name="description" class="form-control" rows="4"
+          placeholder="Enter product description" [(ngModel)]="description" #descriptionName="ngModel"></textarea>
+      </div>
+
+      <div class="mb-3">
+        <select id="categorySelect" name="category" [(ngModel)]="selectedCategory" #categoryName="ngModel"
+          class="form-select" required>
           <option value="" disabled hidden selected>Category</option>
           @for (c of categoryNames; track c) {
           <option [value]="c">{{ c }}</option>
           }
         </select>
-    </div>
-    <div class="invalid-feedback" [class.d-block]="(submitted && categoryName.invalid)">
+      </div>
+      <div class="invalid-feedback" [class.d-block]="(submitted && categoryName.invalid)">
         Please select a category.
       </div>
-    <button class="btn btn-success w-30" type="submit" >Add</button>
-  </form>
-  }@else if (maintainerService.getMode() == op.REMOVE) {
+      <button class="btn btn-success w-30" type="submit">Add</button>
+    </form>
+
+    }@else if (this.isActive) {
+
+    <form class="w-50" novalidate #prodcutJSONForm="ngForm" (ngSubmit)="onAddJSON(prodcutJSONForm)">
+      <div class="mb-3">
+        <label for="prodJSON" class="form-label">Product JSON</label>
+        <textarea id="prodJSON" name="prodJSON" class="form-control" rows="12" [placeholder]="jsonPlaceholder"
+          [(ngModel)]="rawJSON" #descriptionName="ngModel"></textarea>
+        <div class="invalid-feedback" [class.d-block]="(submitted && this.parseError !== null)">
+          Wrong format.
+        </div>
+      </div>
+      <button class="btn btn-success w-30" type="submit">Add</button>
+    </form>
+    }
+
+    }@else if (maintainerService.getMode() == op.REMOVE) {
+
     <form class="w-40" novalidate style="width: 40%;" #prodcutForm="ngForm" (ngSubmit)="onRemove(prodcutForm)">
       <div class="mb-3">
         <label for="prodId" class="form-label">Product id</label>
@@ -57,7 +92,8 @@
           Please enter the product id.
         </div>
       </div>
-      <button class="btn btn-danger w-30" type="submit" >Remove</button>
+      <button class="btn btn-danger w-30" type="submit">Remove</button>
     </form>
-  }
-</div>
+
+    }
+  </div>

@@ -25,7 +25,22 @@ export class ManageProd {
   inventory: number | null = null;
   description: string = '';
   prodId: number = 0;
+  rawJSON: string = "";
+  parseError: string | null = null;
+  productData: ProductRequestModel | null = null;
+  isActive: boolean = false;
   maintainerService = inject(MaintainerService);
+  jsonPlaceholder = `{
+  "name": "Example name",
+  "brand": "Example brand",
+  "price": 99.9,
+  "inventory": 1,
+  "description": "Example description",
+  "category": {
+    "id": 1,
+    "name": "Example category name"
+  }
+}`;
 
   ngOnInit() {
     this.maintainerService.getCategories().subscribe((response) => {
@@ -72,6 +87,60 @@ export class ManageProd {
       form.resetForm();
       this.submitted = false;
     });
+  };
+
+  onAddJSON(form: NgForm){
+    this.submitted = true;
+    this.parseJson(this.rawJSON);
+
+    if(this.parseError === null){
+      this.maintainerService.addProduct(this.productData!).subscribe({
+        next: resp => {
+          form.resetForm();
+          this.submitted = false;
+        },
+        error: err => {
+          console.log(err.message);
+        }
+      });
+    }
+    
+  }
+
+  resetSubmitted(){
+    this.submitted = false;
+  }
+
+  private isProduct(data: any): data is ProductRequestModel {
+  return(
+    typeof data === "object" &&
+    typeof data.name === "string" &&
+    typeof data.brand === "string" &&
+    typeof data.price === "number" &&
+    typeof data.inventory === "number" &&
+    typeof data.description === "string" &&
+    typeof data.category === "object" &&
+    typeof data.category.id === "number" &&
+    typeof data.category.name === "string");
+  };
+
+  private parseJson(rawJSON: string) {
+    try {
+      const parsed = JSON.parse(this.rawJSON);
+
+      if (this.isProduct(parsed)) {
+        this.productData = parsed;
+        this.parseError = null;
+        console.log("Valid product:", this.productData);
+      } else {
+        this.parseError = "JSON does not match ProductRequestModel";
+        this.productData = null;
+      }
+    } catch (err) {
+      this.parseError = "Invalid JSON format";
+      this.productData = null;
+      console.log(this.parseError);
+    }
   };
   
 }
