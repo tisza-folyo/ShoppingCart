@@ -4,7 +4,7 @@ import com.mine.shops.dto.UserDto;
 import com.mine.shops.exceptions.AlreadyExistsException;
 import com.mine.shops.exceptions.ResourceNotFoundException;
 import com.mine.shops.model.Role;
-import com.mine.shops.model.User;
+import com.mine.shops.model.ShopUser;
 import com.mine.shops.repository.RoleRepository;
 import com.mine.shops.repository.UserRepository;
 import com.mine.shops.request.CreateUserRequest;
@@ -31,7 +31,7 @@ public class UserService implements IUserService {
     private final RoleRepository roleRepository;
 
     @Override
-    public User getUserById(Long id) {
+    public ShopUser getUserById(Long id) {
         return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
 
@@ -39,9 +39,9 @@ public class UserService implements IUserService {
     public List<UserDto> getAllUsers() { return userRepository.findAll().stream().map(this::convertUserToDto).collect(Collectors.toList()); }
 
     @Override
-    public User createUser(CreateUserRequest request, Role role) {
+    public ShopUser createUser(CreateUserRequest request, Role role) {
         return Optional.of(request).filter(user -> !userRepository.existsByEmail(request.getEmail())).map(req ->{
-            User user = new User();
+            ShopUser user = new ShopUser();
             user.setEmail(req.getEmail());
             user.setPassword(passwordEncoder.encode(req.getPassword()));
             user.setFirstName(req.getFirstName());
@@ -52,23 +52,23 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User updateUserRole(Long id, Role newRole) {
-        User user = userRepository.findById(id)
+    public ShopUser updateUserRole(Long id, Role newRole) {
+        ShopUser user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-        user.getRoles().forEach(role -> role.getUsers().remove(user));
+        user.getRoles().forEach(role -> role.getShopUsers().remove(user));
 
         Set<Role> newRoles = new HashSet<>();
         newRoles.add(newRole);
         user.setRoles(newRoles);
-        newRole.getUsers().add(user);
+        newRole.getShopUsers().add(user);
 
         return userRepository.save(user);
 
     }
 
     @Override
-    public User updateUser(UpdateUserRequest request, Long id) {
+    public ShopUser updateUser(UpdateUserRequest request, Long id) {
         return userRepository.findById(id).map(existingUser -> {
             existingUser.setFirstName(request.getFirstName());
             existingUser.setLastName(request.getLastName());
@@ -84,12 +84,12 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public UserDto convertUserToDto(User user) {
+    public UserDto convertUserToDto(ShopUser user) {
         return modelMapper.map(user, UserDto.class);
     }
 
     @Override
-    public User getAuthenticatedUser() {
+    public ShopUser getAuthenticatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
         return userRepository.findByEmail(email);

@@ -1,11 +1,11 @@
 package com.mine.shops.repository;
 
-import com.mine.shops.model.User;
+import com.mine.shops.model.ShopUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<ShopUser, Long> {
     boolean existsByEmail(String email);
 
 
-    User findByEmail(String email);
+    ShopUser findByEmail(String email);
 }

@@ -1,6 +1,6 @@
 package com.mine.shops.security.user;
 
-import com.mine.shops.model.User;
+import com.mine.shops.model.ShopUser;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,7 +25,7 @@ public class ShopUserDetails implements UserDetails {
 
     private Collection<GrantedAuthority> authorities;
 
-    public static ShopUserDetails buildUserDetails(User user) {
+    public static ShopUserDetails buildUserDetails(ShopUser user) {
         List<GrantedAuthority> authorities = user.getRoles().stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
         return new ShopUserDetails(
                 user.getId(),

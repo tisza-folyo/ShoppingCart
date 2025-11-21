@@ -3,7 +3,7 @@ package com.mine.shops.service.cart;
 import com.mine.shops.dto.CartDto;
 import com.mine.shops.exceptions.ResourceNotFoundException;
 import com.mine.shops.model.Cart;
-import com.mine.shops.model.User;
+import com.mine.shops.model.ShopUser;
 import com.mine.shops.repository.CartItemRepository;
 import com.mine.shops.repository.CartRepository;
 import com.mine.shops.service.user.IUserService;
@@ -53,16 +53,16 @@ public class CartService implements ICartService {
         if (existingCart != null) {
             return existingCart;
         }
-        User user = userService.getUserById(userId);
+        ShopUser user = userService.getUserById(userId);
         Cart cart = new Cart();
-        cart.setUser(user);
+        cart.setShopUser(user);
         user.setCart(cart);
         return cartRepository.save(cart);
     }
 
     @Override
     public Cart getCartByUserId(Long userId) {
-        return cartRepository.findByUserId(userId);
+        return cartRepository.findByShopUserId(userId);
     }
 
     @Override

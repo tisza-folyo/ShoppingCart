@@ -1,7 +1,7 @@
 package com.mine.shops.data;
 
 import com.mine.shops.model.Role;
-import com.mine.shops.model.User;
+import com.mine.shops.model.ShopUser;
 import com.mine.shops.repository.RoleRepository;
 import com.mine.shops.repository.UserRepository;
 import com.mine.shops.service.cart.CartService;
@@ -38,7 +38,7 @@ public class DataInitializer implements ApplicationListener<ApplicationEvent> {
             if (userRepository.existsByEmail(defaultEmail)) {
                 continue;
             }
-            User user = new User();
+            ShopUser user = new ShopUser();
             user.setFirstName("The User");
             user.setLastName("User" + i);
             user.setEmail(defaultEmail);
@@ -58,7 +58,7 @@ public class DataInitializer implements ApplicationListener<ApplicationEvent> {
             if (userRepository.existsByEmail(defaultEmail)) {
                 continue;
             }
-            User user = new User();
+            ShopUser user = new ShopUser();
             user.setFirstName("The Admin");
             user.setLastName("Admin" + i);
             user.setEmail(defaultEmail);

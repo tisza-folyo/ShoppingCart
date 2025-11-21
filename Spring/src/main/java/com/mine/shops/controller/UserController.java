@@ -4,7 +4,7 @@ import com.mine.shops.dto.UserDto;
 import com.mine.shops.exceptions.AlreadyExistsException;
 import com.mine.shops.exceptions.ResourceNotFoundException;
 import com.mine.shops.model.Role;
-import com.mine.shops.model.User;
+import com.mine.shops.model.ShopUser;
 import com.mine.shops.repository.RoleRepository;
 import com.mine.shops.request.CreateUserRequest;
 import com.mine.shops.request.UpdateUserRequest;
@@ -12,7 +12,6 @@ import com.mine.shops.response.ApiResponse;
 import com.mine.shops.service.cart.CartService;
 import com.mine.shops.service.user.UserService;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -45,7 +44,7 @@ public class UserController {
     @GetMapping("/{userId}/user")
     public ResponseEntity<ApiResponse> getUserById(@PathVariable Long userId) {
         try {
-            User user = userService.getUserById(userId);
+            ShopUser user = userService.getUserById(userId);
             UserDto userDto = userService.convertUserToDto(user);
             return ResponseEntity.ok(new ApiResponse("Success", userDto));
         } catch (ResourceNotFoundException e) {
@@ -57,7 +56,7 @@ public class UserController {
     public ResponseEntity<ApiResponse> createUser(@RequestBody CreateUserRequest request) {
         try {
             Role userRole = roleRepository.findByName("ROLE_USER");
-            User user = userService.createUser(request, userRole);
+            ShopUser user = userService.createUser(request, userRole);
             cartService.initCartIfNotExists(user.getId());
             UserDto userDto = userService.convertUserToDto(user);
             return ResponseEntity.ok(new ApiResponse("Success", userDto));
@@ -70,7 +69,7 @@ public class UserController {
     public ResponseEntity<ApiResponse> createAdmin(@RequestBody CreateUserRequest request) {
         try {
             Role adminRole = roleRepository.findByName("ROLE_ADMIN");
-            User user = userService.createUser(request, adminRole);
+            ShopUser user = userService.createUser(request, adminRole);
             cartService.initCartIfNotExists(user.getId());
             UserDto userDto = userService.convertUserToDto(user);
             return ResponseEntity.ok(new ApiResponse("Success", userDto));
@@ -82,7 +81,7 @@ public class UserController {
     @PutMapping("/{userId}/user")
     public ResponseEntity<ApiResponse> updateUser(@PathVariable Long userId, @RequestBody UpdateUserRequest request) {
         try {
-            User user = userService.updateUser(request,userId);
+            ShopUser user = userService.updateUser(request,userId);
             UserDto userDto = userService.convertUserToDto(user);
             return ResponseEntity.ok(new ApiResponse("Success", userDto));
         } catch (ResourceNotFoundException e) {
@@ -99,7 +98,7 @@ public class UserController {
             } else if (roleUpper.contains("USER")) {
                 userRole = roleRepository.findByName("ROLE_USER");
             }
-            User user = userService.updateUserRole(userId, userRole);
+            ShopUser user = userService.updateUserRole(userId, userRole);
             UserDto userDto = userService.convertUserToDto(user);
             return ResponseEntity.ok(new ApiResponse("Success", userDto));
         } catch (ResourceNotFoundException e) {

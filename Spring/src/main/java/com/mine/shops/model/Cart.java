@@ -1,6 +1,5 @@
 package com.mine.shops.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,7 +24,7 @@ public class Cart {
 
     @OneToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private ShopUser shopUser;
 
     public void addItem(CartItem cartItem) {
         this.items.add(cartItem);

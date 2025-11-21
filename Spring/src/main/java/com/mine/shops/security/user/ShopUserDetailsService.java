@@ -1,6 +1,6 @@
 package com.mine.shops.security.user;
 
-import com.mine.shops.model.User;
+import com.mine.shops.model.ShopUser;
 import com.mine.shops.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,7 +18,7 @@ public class ShopUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = Optional.ofNullable(userRepository.findByEmail(email)).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        ShopUser user = Optional.ofNullable(userRepository.findByEmail(email)).orElseThrow(() -> new UsernameNotFoundException("User not found"));
         return ShopUserDetails.buildUserDetails(user);
     }
 }

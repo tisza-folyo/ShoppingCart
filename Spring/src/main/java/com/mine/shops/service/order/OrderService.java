@@ -52,7 +52,7 @@ public class OrderService implements IOrderService {
 
     @Override
     public List<OrderDto> getUserOrders(Long userId) {
-        return orderRepository.findByUserId(userId).stream().map(this::convertToDto).toList();
+        return orderRepository.findByShopUserId(userId).stream().map(this::convertToDto).toList();
     }
 
     @Override
@@ -64,7 +64,7 @@ public class OrderService implements IOrderService {
 
     private Order createOrder(Cart cart) {
         Order order = new Order();
-        order.setUser(cart.getUser());
+        order.setShopUser(cart.getShopUser());
         order.setStatus(OrderStatus.PENDING);
         order.setOrderDate(LocalDate.now());
         return order;

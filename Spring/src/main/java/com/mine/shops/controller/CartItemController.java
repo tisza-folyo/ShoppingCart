@@ -3,7 +3,7 @@ package com.mine.shops.controller;
 
 import com.mine.shops.exceptions.ResourceNotFoundException;
 import com.mine.shops.model.Cart;
-import com.mine.shops.model.User;
+import com.mine.shops.model.ShopUser;
 import com.mine.shops.response.ApiResponse;
 import com.mine.shops.service.cart.CartService;
 import com.mine.shops.service.cart.ICartItemService;
@@ -26,7 +26,7 @@ public class CartItemController {
     @PostMapping("/{productId}/items")
     public ResponseEntity<ApiResponse> addItemToCart(@PathVariable Long productId,@RequestParam Integer quantity) {
         try {
-            User user = userService.getAuthenticatedUser();
+            ShopUser user = userService.getAuthenticatedUser();
             Cart cart = cartService.initCartIfNotExists(user.getId());
 
             cartItemService.addItemToCart(cart.getId(), productId, quantity);
