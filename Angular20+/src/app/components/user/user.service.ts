@@ -1,9 +1,10 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../enviroments/enviroment';
+
 import { RequestUserModel } from './user.request.model';
 import { UserModel } from './user.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'

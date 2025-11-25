@@ -1,12 +1,12 @@
 import { Injectable, signal } from "@angular/core";
 import { Operation } from "./operation";
-import { environment } from "../../enviroments/enviroment";
 import { Observable } from "rxjs";
 import { CategoryModel } from "../category/category.model";
 import { HttpClient } from "@angular/common/http";
 import { ProductRequestModel } from "../product/product.request.model";
 import { OrderModel } from "../order/order.model";
 import { UserModel } from "../user/user.model";
+import { environment } from "../../../environments/environment";
 
 @Injectable({ providedIn: 'root' })
 export class MaintainerService {

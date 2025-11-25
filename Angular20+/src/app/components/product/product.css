@@ -6,3 +6,8 @@
     padding-left: 5em;
     padding-right: 5em;
 }
+.spinner-large {
+    width: 5rem;
+    height: 5rem;
+    border-width: 0.5rem;
+}

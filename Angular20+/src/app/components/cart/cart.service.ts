@@ -1,10 +1,10 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../enviroments/enviroment';
 import { CartModel } from './cart.model';
 import { UserService } from '../user/user.service';
 import { CartItemModel } from './cartItem.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class Cartservice {

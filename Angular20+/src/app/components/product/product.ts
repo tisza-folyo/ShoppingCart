@@ -29,7 +29,6 @@ export class Product implements OnInit {
 
   ngOnInit() {
     this.loadProducts();
-    this.loading = false;
   }
   addToCart(productId: number, quantity: string | number) {
     const qty = Number(quantity) || 1;
@@ -162,9 +161,11 @@ export class Product implements OnInit {
         if (this.selectedCategory.length <= 0) {
           this.fillCategories();
         }
+        this.loading = false;
       },
       error: (err) => {
         console.log(err);
+        this.loading = false;
       },
     });
   }
